@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SmartDen</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+</head>
+<body>
+    <div class="row">
+        <nav>
+            <ul>
+              <li><a href="{{ url_for('landingpage') }}">Home</a></li>
+              <li><a href="{{ url_for('settings') }}">Modules</a></li>
+              <li><a href="{{ url_for('profile') }}">Profile</a></li>
+              <li><a href="{{ url_for('index') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+    <h1 id="Title">Configure detect</h1>
+    <div class="Form">
+        <ul id="settings_ul" data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
+                
+            <p style="padding-left:10px">  Select the fields to appear on the Sale screen</p>
+            <li class="list_li_interface">
+                <h2>Module details </h2>
+                <div>
+            
+                    <fieldset id ="orderID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Toddler</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Toddler" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                            
+                        </div>
+                    </fieldset>
+                    
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Weapon</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Weapon" type="checkbox" >
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Shoes</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Shoes" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Animal</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Animal" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Fruit</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Fruit" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Fire</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Fire" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Dirt</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Dirt" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Recieve SMS Alerts</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="SMStwilio" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                   
+
+                   
+            
+                </div>
+            </li>
+
+            
+        </ul>
+    </div>
+
+    <script>
+
+        // Flip Switch triggers
+        $('#Toddler').change(function(){
+            var selection = $('#Toddler').val();
+            console.log(selection);
+            if (document.getElementById('Toddler').checked){
+ 
+                $.ajax({
+                    url: '/_update_Toddler',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+      
+                $.ajax({
+                    url: '/_update_Toddler',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+            
+        });
+        // Flip Switch triggers
+        $('#Weapon').change(function(){
+            var selection = $('#Weapon').val();
+            if (document.getElementById('Weapon').checked){
+       
+                $.ajax({
+                    url: '/_update_Weapon',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+                
+                $.ajax({
+                    url: '/_update_Weapon',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+        // Flip Switch triggers
+        $('#Shoes').change(function(){
+            var selection = $('#Shoes').val();
+            if (document.getElementById('Shoes').checked){
+                
+                $.ajax({
+                    url: '/_update_Shoes',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+                
+                $.ajax({
+                    url: '/_update_Shoes',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+        // Flip Switch triggers
+        $('#Dirt').change(function(){
+            var selection = $('#Dirt').val();
+            if (document.getElementById('Dirt').checked){
+                
+                $.ajax({
+                    url: '/_update_Dirt',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+               
+                $.ajax({
+                    url: '/_update_Dirt',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+
+        // Flip Switch triggers
+        $('#Animal').change(function(){
+            var selection = $('#Animal').val();
+            if (document.getElementById('Animal').checked){
+                
+                $.ajax({
+                    url: '/_update_Animal',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+               
+                $.ajax({
+                    url: '/_update_Animal',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+        // Flip Switch triggers
+        $('#Fruit').change(function(){
+            var selection = $('#Fruit').val();
+            if (document.getElementById('Fruit').checked){
+                
+                $.ajax({
+                    url: '/_update_Fruit',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+               
+                $.ajax({
+                    url: '/_update_Fruit',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+        // Flip Switch triggers
+        $('#Fire').change(function(){
+            var selection = $('#Fire').val();
+            if (document.getElementById('Fire').checked){
+                
+                $.ajax({
+                    url: '/_update_Fire',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+               
+                $.ajax({
+                    url: '/_update_Fire',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+
+        $('#SMStwilio').change(function(){
+            var selection = $('#SMStwilio').val();
+            if (document.getElementById('SMStwilio').checked){
+                console.log("Fuck ON");
+                $.ajax({
+                    url: '/_update_SMStwilio',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+                console.log("Fuck OFF");
+                $.ajax({
+                    url: '/_update_SMStwilio',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    
+        
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>SmartDen</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+   
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+    
+</head>
+<body>
+  <div class="row">
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('landingpage') }}">Home</a></li>
+        <li><a href="{{ url_for('settings') }}">Modules</a></li>
+        <li><a href="{{ url_for('profile') }}">Profile</a></li>
+        <li><a href="{{ url_for('index') }}">Logout</a></li>
+      </ul>
+    </nav>
+  </div>
+  <h1 id="Title">Store Familair Faces</h1>
+
+  <!-- Stream video via webcam -->
+  <div class="video-wrap">
+    <video id="video" playsinline autoplay></video>
+  </div>
+
+  <!-- Trigger canvas web API -->
+  <div class="controller">
+    <button id="snap" style="margin-left: 40%;">Capture</button>
+  </div>
+
+  <!-- Webcam video snapshot -->
+  <canvas id="canvas" width="640" height="480"></canvas>
+
+
+  <script>
+
+    'use strict';
+
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const snap = document.getElementById("snap");
+    const errorMsgElement = document.querySelector('span#errorMsg');
+
+    const constraints = {
+      audio: true,
+      video: {
+        width: 1280, height: 720
+      }
+    };
+
+    // Access webcam
+    async function init() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        handleSuccess(stream);
+      } catch (e) {
+        errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+      }
+    }
+
+    // Success
+    function handleSuccess(stream) {
+      window.stream = stream;
+      video.srcObject = stream;
+    }
+
+    // Load init
+    init();
+
+    var d = new Date();
+    var n = d.getSeconds();
+
+    // Draw image
+    var context = canvas.getContext('2d');
+    snap.addEventListener("click", function() {
+      context.drawImage(video, 0, 0, 640, 480);
+    });
+
+    var link = document.createElement('a');
+    link.innerHTML = 'download image';
+    link.addEventListener('click', function(ev) {
+        link.href = canvas.toDataURL();
+        link.download = "mypainting"+ "_"+n +".png";
+    }, false);
+    document.body.appendChild(link);
+    
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SmartDen</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+    <!-- <script type="text/javascript" src="./landing.js"></script> -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/landingpage.css') }}">
+    
+</head>
+    
+
+<body>
+    
+
+    <div class="container">
+        <div class="row card">
+            <div class="center">
+                <h1 class="text-center login-title">Sign in to continue to activate Jarvis</h1>
+                <div class="account-wall">
+                    <img class="profile-img" src="../static/lock.png" width="200px" height="200px"
+                        alt="">
+                    
+                    <input type="text" id="loginEmail" class="form-control" placeholder="Email" required autofocus>
+                    <input type="password" id="loginPass" class="form-control" placeholder="Password" required>
+                    <button class="btn btn-lg btn-primary btn-block" id="loginForm" onclick="this.handleOnSubmit">
+                        Sign in</button>
+                    
+                </div>
+                <a href="{{ url_for('registration') }}" class="text-center new-account">Create an account</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+    <script>
+        $( "#loginForm" ).click(async function() {
+
+            var password = $('#loginPass').val()
+            var email = $('#loginEmail').val()
+            var firebaseConfig = {
+                apiKey: "AIzaSyBgkMteibGnVsRCDlDdZXbBAU2zuSfkrdc",
+                authDomain: "supervisor-f2f29.firebaseapp.com",
+                databaseURL: "https://supervisor-f2f29.firebaseio.com",
+                projectId: "supervisor-f2f29",
+                storageBucket: "supervisor-f2f29.appspot.com",
+                messagingSenderId: "124766684889",
+                appId: "1:124766684889:web:f657ab26b2fbe51b4920c8"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            // firebase.firestore().settings( { timestampsInSnapshots: true }) 
+                
+            await firebase.auth()
+                .signInWithEmailAndPassword(email,password)
+                .then( function(){
+                    console.log("Successfully created user account with uid:");
+                    window.location.replace("{{ url_for('landingpage') }}");
+                })
+                .catch(function(error){
+                    alert("email or password is incorrect")
+                    // console.log("Error signing in:", error);
+                });
+            
+            
+
+                        
+        });
+    </script>
+
+</html>

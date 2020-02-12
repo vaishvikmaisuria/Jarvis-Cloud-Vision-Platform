@@ -1,0 +1,262 @@
+<html>
+  <head>
+    <title>SmartDen</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+    
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+
+    <!-- scripts -->
+    
+    
+  </head>
+  <body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    
+    <script>
+       function toggle_Camera1(){
+        console.log("Got here fucking asshole1")
+        let camera1 = $('#camera1').data('value');
+        if (camera1 == "on"){
+          $('#camera1').data('value', "off") 
+          $('#camera1').css("background-color", "#a9a9a9");
+        }else{
+          $('#camera1').data('value', "on") 
+          $('#camera1').css("background-color", "#2bbbad");
+        }
+        camera1 = $('#camera1').data('value');
+        
+        $.ajax({
+            url: '/_update_Screen1',
+            data: {"data": camera1},
+            type: 'POST',
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+        
+      }
+      function toggle_Camera2(){
+        let camera2 = $('#camera2').data('value');
+        if (camera2 == "on"){
+          $('#camera2').data('value', "off") 
+          $('#camera2').css("background-color", "#a9a9a9");
+
+        }else{
+          $('#camera2').data('value', "on") 
+          $('#camera2').css("background-color", "#2bbbad");
+        }
+        camera2 = $('#camera2').data('value');
+
+        $.ajax({
+            url: '/_update_Screen2',
+            data: {"data": camera2},
+            type: 'POST',
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+      }
+
+      function addGooglehome(){
+        let googleHome = $('#googleHome').data('value');
+        if (googleHome == "on"){
+          $('#googleHome').data('value', "off") 
+          $('#googleHome').css("background-color", "#a9a9a9");
+
+        }else{
+          $('#googleHome').data('value', "on") 
+          $('#googleHome').css("background-color", "#2bbbad");
+        }
+        googleHome = $('#googleHome').data('value');
+
+        // $.ajax({
+        //     url: '/_update_Screen2',
+        //     data: {"data": camera2},
+        //     type: 'POST',
+        //     success: function(response) {
+        //         console.log(response);
+        //     },
+        //     error: function(error) {
+        //         console.log(error);
+        //     }
+        // });
+      }
+
+    
+    </script>
+    
+    <div class="row">
+      <nav class="#0277bd light-blue darken-3">
+          <ul>
+            <li><a href="{{ url_for('landingpage') }}">Home</a></li>
+            <li><a href="{{ url_for('settings') }}">Modules</a></li>
+            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('index') }}">Logout</a></li>
+
+            <li class="right bold"><a href="{{ url_for('landingpage') }}">Secured with BlockChain and Cloud  - JARVIS</a></li>
+            
+          </ul>
+      </nav>
+
+      <div class="container">
+        <div class="card" style="padding-bottom: 20px;">
+          <h3 class="center col s12 " style="border-radius: 10px">Active Devices</h3>
+          <div class="center">
+              <a class="waves-effect waves-light btn-small" style="background-color: #a9a9a9;" id="camera1" onclick='toggle_Camera1()' data-value="off">Camera 1</a>
+              <a class="waves-effect waves-light btn-small" style="background-color: #a9a9a9;"  id="camera2" onclick='toggle_Camera2()' data-value="off">Camera 2</a>
+              <a class="waves-effect waves-light btn-small" style="background-color: #a9a9a9;"  id="googleHome" onClick="addGooglehome()"  data-value="off" >Google Home</a>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+
+    <div class="container row" id="mainFeed">
+      <h4 class="col s12">Cameras</h3>
+        <img src="{{ url_for('video_feed') }}" 
+          alt="Camera Not active" 
+          id="mainCamera"
+          onerror="this.onerror=null; this.hidden = true; document.createElement('h5').appendChild(document.createTextNode('Cameras Not Active'))",>
+    </div>
+
+    <div class="container row">
+      <h4 class="col s6">Google Home</h4>
+      
+    </div>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col s6 center card">
+            <div class="col s12 card">
+                <h5>Camera 1 Logs</h5>
+            </div>
+
+            <div style="height: 500px; overflow-y: scroll;" id="result1"></div>
+              <ul id="result1" style="position: absolute;
+              top: 60px;
+              bottom: 20px;
+              left: 20px;
+              right: 20px;
+              overflow: scroll;
+              height: 80%" >
+
+              </ul>
+            </div>
+
+        </div>
+        <!-- <div class="col s6 center card">
+            <div class="col s12 card">
+                <h5>Camera 2 Logs</h5>
+            </div>
+
+            <div style="height: 500px;">
+              <ul id="result2" style="position: absolute;
+              top: 60px;
+              bottom: 20px;
+              left: 20px;
+              right: 20px;
+              overflow: scroll;
+              height: 80%;" >
+
+              </ul>
+            </div>
+        </div> 
+      </div>
+    </div>
+         
+  
+    <!-- <div id="alert1">Camera 3</div>
+    <div id="result3"></div> -->
+  
+    <script>
+
+
+      get_camera1_Logs();
+      // get_camera2_Logs();
+      
+      function get_camera1_Logs(){
+        $.ajax({
+          type: 'POST',
+          url: "/_view_log",
+          dataType: "text",
+
+          success: function(data){ 
+            let proxy = JSON.parse(data);
+            let camera1 = $('#camera1').data('value');
+            if (camera1 == "on" && proxy['name'] != 'undefined'){
+              $('#result1').append( "<li>"+ proxy['time']+ ": "+ proxy['name'] +"</li>" ); 
+            }
+          },
+          complete: function() {
+            // Schedule the next request when the current one's complete
+            setTimeout(get_camera1_Logs, 5000);
+          }
+        });
+      }
+
+      // function get_camera2_Logs(){
+      //   $.ajax({
+      //     type: 'POST',
+      //     url: "/_view_logii",
+      //     dataType: "text",
+      //     success: function(data){
+      //       let proxy = JSON.parse(data);
+      //       let camera2 = $('#camera2').data('value');
+      //       if (camera2 == "on"){
+      //         $('#result2').append( "<li>"+proxy['time']+ ": "+ proxy['name'] +"</li>" ); 
+      //       }
+      //     },
+      //     complete: function() {
+      //       // Schedule the next request when the current one's complete
+      //       setTimeout(get_camera2_Logs, 5000);
+      //     }
+      //   });
+      // }
+
+      // function get_camera3_Logs(){
+      //   $.ajax({
+      //     type: 'POST',
+      //     url: "/_view_logiii",
+      //     dataType: "text",
+      //     success: function(data){
+      //         if (data == null){
+      //           $('#result3').html("Camera is not Connected!")
+      //         } else {
+      //           $('#result3').html(data)
+      //         }
+              
+      //     },
+      //     complete: function() {
+      //       // Schedule the next request when the current one's complete
+      //       setTimeout(get_camera3_Logs, 5000);
+      //     }
+          
+      //   });
+      // }
+    </script>
+      
+    </script>
+   
+  </body>
+</html>
+
